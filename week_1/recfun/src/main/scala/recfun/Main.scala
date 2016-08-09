@@ -37,16 +37,16 @@ object Main {
    * Exercise 3
    */
     def countChange(money: Int, coins: List[Int]): Int = {
+      val cnt = 0
 
-
-      def count(money_left: Int, cnt: Int, coins: List[Int]): Int = {
+      def count(money_left: Int,  coins: List[Int]): Int = {
         if (money_left == 0) 1
-        else if (money_left < coins.min) 0
+        else if (money_left < 0 ) 0
+        else if (money_left > 0 && coins.isEmpty) 0
         else
-          for {c <- coins if c <= money_left}
-            yield cnt + count(money_left - c, cnt, coins.filter((coin: Int) => coin <= money_left))
+          count(money_left, coins.tail) + count(money_left-coins.head, coins)
       }
-      count(money,0, coins)
+      count(money, coins)
     }
 
 

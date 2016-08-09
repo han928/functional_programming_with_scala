@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;week2-t.sc&apos; to &apos;Progfun/src/week2&apos;&#x0A;- Original project: &apos;Progfun&apos;&#x0A;- Destination element: &apos;Progfun/src/week2&apos;&#x0A;- Original element: &apos;week2-t.sc&apos;&#x0A;- Update references to refactored element" description="Move file" destination="/src&lt;week2" element1="src/week1/week2-t.sc" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1470689762729" units="0" version="1.0"/>
+</session>
