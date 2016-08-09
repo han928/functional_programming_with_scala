@@ -20,7 +20,7 @@ object FunSets {
    * Returns the set of the one given element.
    */
     def singletonSet(elem: Int): Set = (x: Int) => x == elem
-  
+
 
   /**
    * Returns the union of the two given sets,
@@ -73,7 +73,17 @@ object FunSets {
    * Returns a set transformed by applying `f` to each element of `s`.
    */
     def map(s: Set, f: Int => Int): Set = {
+      def iter(ss: Set, a: Int): Set = {
+        if (a > bound) ss
+        else if (s(a)) iter(union(diff(ss, singletonSet(a)), singletonSet(f(a))), a+1)
+        else iter(ss, a+1)
+       }
+      iter(s, -bound)
+
     }
+
+
+
   /**
    * Displays the contents of a set
    */
