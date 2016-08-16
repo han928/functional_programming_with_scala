@@ -41,8 +41,14 @@ abstract class TweetSet {
    * Question: Can we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def filter(p: Tweet => Boolean): TweetSet = ???
+
+    def isEmpty: Boolean
   
+    /** han:
+      * should use filterAcc of itself to return filtered set based on empty or nonempoty
+      */
+    def filter(p: Tweet => Boolean): TweetSet = filterAcc(p, new Empty)
+
   /**
    * This is a helper method for `filter` that propagetes the accumulated tweets.
    */
@@ -51,11 +57,11 @@ abstract class TweetSet {
   /**
    * Returns a new `TweetSet` that is the union of `TweetSet`s `this` and `that`.
    *
-   * Question: Should we implment this method here, or should it remain abstract
+   * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def union(that: TweetSet): TweetSet = ???
-  
+    def union(that: TweetSet): TweetSet // not sure if this is needed for union
+
   /**
    * Returns the tweet from this set which has the greatest retweet count.
    *
@@ -107,8 +113,20 @@ abstract class TweetSet {
 }
 
 class Empty extends TweetSet {
-    def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
-  
+    /** han:
+      * it's empty so it should return empty no matter what p is
+      */
+    def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = acc
+
+    /**
+      * return that if this is empty
+      * @param that
+      * @return
+      */
+    def union(that: TweetSet): TweetSet = that
+
+
+    def isEmpty = true
   /**
    * The following methods are already implemented
    */
@@ -123,10 +141,29 @@ class Empty extends TweetSet {
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
+  /** han:
+    * use tail recursive(acc) to collect tweets that conforms to filtered p function
+    *
+    */
 
-    def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet = ???
-  
-    
+
+    def filterAcc(p: Tweet => Boolean, acc: TweetSet): TweetSet =
+
+      if (p(elem)) left.filterAcc(p, right.filterAcc(p, acc.incl(elem)))
+      else left.filterAcc(p, right.filterAcc(p, acc))
+
+
+    def isEmpty = false
+
+
+  /**
+    * @param that
+    * @return compare the elem of this and that and then call union recursively
+    */
+    def union(that: TweetSet): TweetSet =
+    ((left union right) union that) incl elem
+
+
   /**
    * The following methods are already implemented
    */
