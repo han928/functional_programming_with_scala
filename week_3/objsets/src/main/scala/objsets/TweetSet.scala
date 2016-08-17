@@ -71,15 +71,16 @@ abstract class TweetSet {
    * Question: Should we implment this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-    def mostRetweeted: Tweet = ???
-  
+
+
+    def mostRetweeted: Tweet
   /**
    * Returns a list containing all tweets of this set, sorted by retweet count
    * in descending order. In other words, the head of the resulting list should
    * have the highest retweet count.
    *
    * Hint: the method `remove` on TweetSet will be very useful.
-   * Question: Should we implment this method here, or should it remain abstract
+   * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
     def descendingByRetweet: TweetList = ???
@@ -125,6 +126,7 @@ class Empty extends TweetSet {
       */
     def union(that: TweetSet): TweetSet = that
 
+    def mostRetweeted = throw new java.util.NoSuchElementException("Empty list")
 
     def isEmpty = true
   /**
@@ -156,13 +158,16 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     def isEmpty = false
 
 
-  /**
-    * @param that
-    * @return compare the elem of this and that and then call union recursively
-    */
     def union(that: TweetSet): TweetSet =
-    ((left union right) union that) incl elem
+      ((left union right) union that) incl elem
 
+    def mostRetweeted: Tweet =
+      if (this.isEmpty) new Tweet("lorem", "ipsum", -1)
+      else RetweetCompare(elem, RetweetCompare(left.mostRetweeted, right.mostRetweeted))
+
+    def RetweetCompare(tw1: Tweet, tw2: Tweet): Tweet =
+      if (tw1.retweets > tw2.retweets) tw1
+      else tw2
 
   /**
    * The following methods are already implemented
